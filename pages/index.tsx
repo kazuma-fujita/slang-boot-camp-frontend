@@ -1,71 +1,162 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import dynamic from "next/dynamic";
+import { AudioRecorder } from "../src/components/audio-recorder";
 
-export default function Home() {
+// const Home2 = () => {
+//   const [audioData, setAudioData] = useState<Blob | null>(null);
+//   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
+//     null
+//   );
+//   const [disabledStopButton, setDisabledStopButton] = useState(true);
+//   const [error, setError] = useState("");
+
+//   useEffect(() => {
+//     console.log("navigation start");
+//     // デバイスがサポートされているか確認する
+//     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+//       setError("This device is not supported");
+//       return;
+//     }
+//     // ユーザーの音声使用許可を要求する
+//     async () => {
+//       try {
+//         const stream = await navigator.mediaDevices.getUserMedia({
+//           audio: true,
+//         });
+//         // audio/webm形式での録音が可能かどうかを確認
+//         if (!MediaRecorder.isTypeSupported("audio/webm")) {
+//           setError("audio/webm is not supported");
+//           return;
+//         }
+
+//         // レコーディングのインスタンスを作成
+//         const recorder = new MediaRecorder(stream, {
+//           mimeType: "video/webm;codecs=vp9",
+//         });
+
+//         // 録音中イベントハンドラー
+//         recorder.addEventListener("dataavailable", (event: BlobEvent) => {
+//           console.log("recording");
+//           if (event.data.size > 0) {
+//             // 音声データをセット
+//             setAudioData(event.data);
+//           }
+//         });
+
+//         setMediaRecorder(recorder);
+//       } catch (error) {
+//         console.error("getUserMedia error", error);
+//       }
+//     };
+//   }, []);
+
+//   // const handleSuccess = (stream) => {
+//   //   // レコーディングのインスタンスを作成
+//   //   audioRef.current = new MediaRecorder(stream, {
+//   //     mimeType: "video/webm;codecs=vp9",
+//   //   });
+//   //   // 音声データを貯める場所
+//   //   var chunks = [];
+//   //   // 録音が終わった後のデータをまとめる
+//   //   audioRef.current.addEventListener("dataavailable", (ele) => {
+//   //     if (ele.data.size > 0) {
+//   //       chunks.push(ele.data);
+//   //     }
+//   //     // 音声データをセット
+//   //     setFile(chunks);
+//   //   });
+//   //   // 録音を開始したら状態を変える
+//   //   audioRef.current.addEventListener("start", () => setAudioState(false));
+//   //   // 録音がストップしたらchunkを空にして、録音状態を更新
+//   //   audioRef.current.addEventListener("stop", () => {
+//   //     setAudioState(true);
+//   //     chunks = [];
+//   //   });
+//   // };
+
+//   // 録音開始
+//   const handleStart = useCallback(() => {
+//     console.log("start");
+//     setDisabledStopButton(true);
+//     mediaRecorder
+//       ? mediaRecorder.start()
+//       : setError("Media Recorder is undefined");
+//   }, [mediaRecorder]);
+
+//   // 録音停止
+//   const handleStop = () => {
+//     console.log("stop");
+//     setDisabledStopButton(false);
+//     mediaRecorder
+//       ? mediaRecorder.stop()
+//       : setError("Media Recorder is undefined");
+//   };
+//   // firebaseに音声ファイルを送信
+//   // const handleSubmit = () => {
+//   //   // firebaseのrefを作成
+//   //   var storageRef = firebase.storage().ref();
+//   //   var metadata = {
+//   //     contentType: "audio/mp3",
+//   //   };
+//   //   // ファイル名を付けてBlobからファイルを作成して送信
+//   //   var mountainsRef = storageRef.child(new Date() + "test.mp3");
+//   //   mountainsRef.put(new Blob(file), metadata).then(function () {
+//   //     console.log("アップロード完了！");
+//   //   });
+//   // };
+//   // const handleRemove = () => {
+//   //   setAudioState(true);
+//   //   setFile([]);
+//   // };
+
+//   return (
+//     <div>
+//       <div>{error}</div>
+//       <button onClick={handleStart}>録音</button>
+//       <button onClick={handleStop} disabled={disabledStopButton}>
+//         ストップ
+//       </button>
+//       {/* <button onClick={handleSubmit} disabled={file.length === 0}>
+//         送信
+//       </button> */}
+//       {/* <button onClick={handleRemove}>削除</button> */}
+//       <ReactAudioPlayer
+//         // src={URL.createObjectURL(new Blob(audioData))}
+//         src={audioData ? URL.createObjectURL(audioData) : ""}
+//         controls
+//       />
+//     </div>
+//   );
+// };
+
+// export const Home = () => {
+//   const { status, startRecording, stopRecording, mediaBlobUrl } =
+//     useReactMediaRecorder({ audio: true });
+
+//   return (
+//     <div>
+//       <p>{status}</p>
+//       <button onClick={startRecording}>Start Recording</button>
+//       <button onClick={stopRecording}>Stop Recording</button>
+//       {/* <video src={mediaBlobUrl} controls autoPlay loop /> */}
+//       <ReactAudioPlayer src={mediaBlobUrl} controls />
+//     </div>
+//   );
+// };
+
+const Recorder = dynamic(
+  () =>
+    import("../src/components/audio-recorder").then(
+      (module) => module.AudioRecorder
+    ),
+  { ssr: false }
+);
+
+const Home = () => {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <meta name="description" content="Generated by create next app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+    <div>
+      <AudioRecorder />
     </div>
-  )
-}
+  );
+};
+
+export default Home;
