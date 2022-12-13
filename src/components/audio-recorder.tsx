@@ -2,7 +2,7 @@ import { useState } from "react";
 import MicrophoneStream from "microphone-stream";
 
 type Props = {
-  finishRecording: (bytes: Buffer | ArrayBuffer | Blob | string) => void;
+  finishRecording: (bytes: Buffer[] | ArrayBuffer[]) => void;
 };
 
 export const AudioRecorder = ({ finishRecording }: Props) => {
@@ -11,7 +11,7 @@ export const AudioRecorder = ({ finishRecording }: Props) => {
   const [audioBuffer] = useState(
     (function () {
       let buffer: ArrayBuffer[] = [];
-      function add(raw: ArrayBuffer[]) {
+      function add(raw: any) {
         buffer = buffer.concat(...raw);
         return buffer;
       }
@@ -24,8 +24,8 @@ export const AudioRecorder = ({ finishRecording }: Props) => {
         reset: function () {
           newBuffer();
         },
-        addData: function (raw: ArrayBuffer) {
-          return add([raw]);
+        addData: function (raw: Float32Array) {
+          return add(raw);
         },
         getData: function () {
           return buffer;
@@ -47,8 +47,7 @@ export const AudioRecorder = ({ finishRecording }: Props) => {
 
     startMic.setStream(stream);
     (startMic as any).on("data", (chunk: Buffer) => {
-      console.log("MicrophoneStream on data");
-      var raw = MicrophoneStream.toRaw(chunk);
+      var raw: Float32Array = MicrophoneStream.toRaw(chunk);
       if (raw == null) {
         return;
       }
@@ -67,8 +66,7 @@ export const AudioRecorder = ({ finishRecording }: Props) => {
       setMicStream(null);
       setRecording(false);
       const resultBuffer = audioBuffer.getData();
-      console.log("resultBuffer", resultBuffer);
-      finishRecording(resultBuffer.join(""));
+      finishRecording(resultBuffer);
     }
   }
 

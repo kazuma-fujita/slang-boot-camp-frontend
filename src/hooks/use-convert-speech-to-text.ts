@@ -1,23 +1,17 @@
-import {
-  BytesSource,
-  SpeechToTextInput,
-  SpeechToTextOutput,
-} from "@aws-amplify/predictions";
+import { SpeechToTextOutput } from "@aws-amplify/predictions";
 import { Predictions } from "aws-amplify";
-import { useCallback } from "react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export const useConvertSpeechToText = () => {
   const [transcribeText, setTranscribeText] = useState("");
   const [error, setError] = useState("");
 
   const convertSpeechToText = useCallback(
-    async (bytes: Buffer | ArrayBuffer | Blob | string) => {
+    // Amazon Transcribe Streaming が正常動作したのは Buffer[] | ArrayBuffer[] 型のみだった
+    // 以下型指定(BytesSource型)では動作しない為、ここだけany型で回避
+    // async (bytes: Buffer | ArrayBuffer | Blob | string) => {
+    async (bytes: any) => {
       try {
-        console.log("audio bytes", bytes);
-        // const buffer: ArrayBuffer = await blob.arrayBuffer();
-        // console.log("buf", buffer);
-        const buffer: ArrayBuffer[] = [];
         const result: SpeechToTextOutput = await Predictions.convert({
           transcription: {
             source: { bytes },
