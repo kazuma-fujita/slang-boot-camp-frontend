@@ -18,10 +18,9 @@ export const useConvertTextToSpeech = () => {
       });
       setSpeechBuffer(result.audioStream);
       setSpeechBlobUrl(result.speech.url);
-    } catch (err) {
-      console.error(err);
-      const error = err as Error;
-      setError(error.message);
+    } catch (error) {
+      console.error(error);
+      setError(JSON.stringify(error, null, 2));
     }
   }, []);
 

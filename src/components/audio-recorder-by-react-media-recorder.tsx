@@ -1,15 +1,15 @@
 import ReactAudioPlayer from "react-audio-player";
 import { useReactMediaRecorder } from "react-media-recorder";
-import { useConvertAudioToText } from "../hooks/use-convert-audio-to-text";
+import { useConvertSpeechToText } from "../hooks/use-convert-speech-to-text";
 
 export const AudioRecorderByReactMediaRecorder = () => {
-  const { convertAudioToText } = useConvertAudioToText();
+  const { convertSpeechToText } = useConvertSpeechToText();
   const { status, startRecording, stopRecording, mediaBlobUrl, clearBlobUrl } =
     useReactMediaRecorder({
       audio: true,
       blobPropertyBag: { type: "audio/mpeg" },
       onStop(_, blob) {
-        convertAudioToText(blob);
+        convertSpeechToText(blob);
         clearBlobUrl();
       },
     });

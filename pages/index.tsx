@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { AudioRecorder } from "../src/components/audio-recorder";
+import { SpeechToText } from "../src/components/speech-to-text";
 
 // const Home2 = () => {
 //   const [audioData, setAudioData] = useState<Blob | null>(null);
@@ -154,7 +154,7 @@ const Recorder = dynamic(
 const Home = () => {
   return (
     <div>
-      <AudioRecorder />
+      <SpeechToText />
     </div>
   );
 };
