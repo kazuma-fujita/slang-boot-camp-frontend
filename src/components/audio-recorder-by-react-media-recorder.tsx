@@ -2,7 +2,7 @@ import ReactAudioPlayer from "react-audio-player";
 import { useReactMediaRecorder } from "react-media-recorder";
 import { useConvertAudioToText } from "../hooks/use-convert-audio-to-text";
 
-export const AudioRecorder = () => {
+export const AudioRecorderByReactMediaRecorder = () => {
   const { convertAudioToText } = useConvertAudioToText();
   const { status, startRecording, stopRecording, mediaBlobUrl, clearBlobUrl } =
     useReactMediaRecorder({
