@@ -18,7 +18,6 @@ export const useConvertSpeechToText = () => {
             language: "en-US",
           },
         });
-        console.log("audio2text", result.transcription.fullText);
         setTranscribeText(result.transcription.fullText);
       } catch (err) {
         const error = err as Error;

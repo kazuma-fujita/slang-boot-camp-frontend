@@ -5,7 +5,7 @@ import { useConvertSpeechToText } from "./use-convert-speech-to-text";
 export const useSpeechToText = () => {
   const { convertSpeechToText, transcribeText, error } =
     useConvertSpeechToText();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
   const [audioBuffer] = useState(
     (() => {
@@ -42,7 +42,7 @@ export const useSpeechToText = () => {
     });
 
     setMicStream(startMic);
-    setIsLoading(true);
+    setIsRecording(true);
   };
 
   const stopRecording = async () => {
@@ -51,9 +51,9 @@ export const useSpeechToText = () => {
       setMicStream(null);
       const resultBuffer = audioBuffer.getData();
       await convertSpeechToText(resultBuffer);
-      setIsLoading(false);
+      setIsRecording(false);
     }
   };
 
-  return { startRecording, stopRecording, transcribeText, isLoading, error };
+  return { startRecording, stopRecording, transcribeText, isRecording, error };
 };
