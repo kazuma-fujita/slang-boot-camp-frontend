@@ -1,8 +1,7 @@
-import { TextToSpeech } from "./text-to-speech";
-import { useQuestion } from "../../pages/index";
-import { Button } from "@mui/material";
-import { useEffect } from "react";
+import { Button, Grid, Typography } from "@mui/material";
+import { useQuestion } from "../hooks/use-question";
 import { SpeechToText } from "./speech-to-text";
+import { TextToSpeech } from "./text-to-speech";
 
 export const Question = () => {
   const { state, dispatch } = useQuestion();
@@ -12,11 +11,23 @@ export const Question = () => {
 
   return (
     <>
+      <Grid item>
+        <Typography variant="h5">
+          {`Stage${state.currentIndex + 1}.`}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="h4">
+          {`${state.currentQuestion.question} (${state.currentQuestion.translation})`}
+        </Typography>
+      </Grid>
       <TextToSpeech state={state} />
       <SpeechToText state={state} />
-      <Button variant="contained" onClick={handleNextButton}>
-        Next
-      </Button>
+      <Grid item>
+        <Button variant="contained" onClick={handleNextButton}>
+          Next
+        </Button>
+      </Grid>
     </>
   );
 };

@@ -29,6 +29,7 @@ export default function App({
   return (
     <CacheProvider value={emotionCache}>
       <Head>
+        <title>Slang Boot Camp</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ThemeProvider theme={theme}>

@@ -1,7 +1,7 @@
 import MicIcon from "@mui/icons-material/Mic";
 import MicNoneIcon from "@mui/icons-material/MicNone";
-import { CircularProgress, IconButton } from "@mui/material";
-import { useEffect } from "react";
+import { CircularProgress, Grid, IconButton, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useSpeechToText } from "../hooks/use-speech-to-text";
 import { State } from "../states/reducer";
 
@@ -19,28 +19,46 @@ export const SpeechToText = ({ state }: Props) => {
     error,
   } = useSpeechToText();
 
+  const [isNextQuestion, setNextQuestion] = useState(false);
   useEffect(() => {
     console.log("Q", state.currentQuestion.question);
-    console.log("A", transcribeText);
-  }, [state, transcribeText]);
+    // console.log("A", transcribeText);
+    setNextQuestion(true);
+  }, [state]);
+
+  const handleStopRecording = () => {
+    setNextQuestion(false);
+    stopRecording();
+  };
 
   return (
     <>
-      <IconButton
-        onClick={isRecording ? stopRecording : startRecording}
-        size="large"
-        aria-label="mic"
-      >
-        {isRecording ? <MicIcon /> : <MicNoneIcon />}
-      </IconButton>
-      {isRecording || isConverting ? (
-        <CircularProgress />
-      ) : state.currentQuestion.question === transcribeText ? (
-        "Whoo-hoo! You're fucking awesome!"
-      ) : (
-        `What the hell are you doing? It sounds like what you said ${transcribeText}`
-      )}
-      <textarea value={transcribeText} rows={8} cols={32} readOnly />
+      <Grid item>
+        <IconButton
+          onClick={isRecording ? handleStopRecording : startRecording}
+          size="large"
+          aria-label="mic"
+        >
+          {isRecording ? (
+            <MicIcon sx={{ fontSize: "100px" }} />
+          ) : (
+            <MicNoneIcon sx={{ fontSize: "100px" }} />
+          )}
+        </IconButton>
+      </Grid>
+      <Grid item>
+        <Typography variant="h5">
+          {isNextQuestion ? (
+            "Speak up!"
+          ) : isConverting ? (
+            <CircularProgress />
+          ) : state.currentQuestion.question === transcribeText ? (
+            `Whoo-hoo! You're fucking awesome! You said "${transcribeText}"!`
+          ) : (
+            `What the hell are you doing? You said "${transcribeText}"`
+          )}
+        </Typography>
+      </Grid>
       {error && <p>{error}</p>}
     </>
   );

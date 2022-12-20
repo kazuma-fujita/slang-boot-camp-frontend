@@ -1,14 +1,7 @@
-import {
-  createContext,
-  Dispatch,
-  useContext,
-  useReducer,
-  useState,
-} from "react";
-import { Question } from "../src/components/question";
-import { SpeechToText } from "../src/components/speech-to-text";
-import { questions } from "../src/data/questions";
-import { Action, initialState, reducer, State } from "../src/states/reducer";
+import { useReducer } from "react";
+import { IndexTemplate } from "../src/components/index-template";
+import { QuestionContext } from "../src/hooks/use-question";
+import { initialState, reducer } from "../src/states/reducer";
 
 // const Home2 = () => {
 //   const [audioData, setAudioData] = useState<Blob | null>(null);
@@ -160,20 +153,11 @@ import { Action, initialState, reducer, State } from "../src/states/reducer";
 //   { ssr: false }
 // );
 
-type ContextProps = {
-  state: State;
-  dispatch: Dispatch<Action>;
-};
-
-const QuestionContext = createContext({} as ContextProps);
-
-export const useQuestion = () => useContext(QuestionContext);
-
 const Home = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <QuestionContext.Provider value={{ state, dispatch }}>
-      <Question />
+      <IndexTemplate />
     </QuestionContext.Provider>
   );
 };

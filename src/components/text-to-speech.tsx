@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useEffect } from "react";
 import ReactAudioPlayer from "react-audio-player";
 import { useConvertTextToSpeech } from "../hooks/use-convert-text-to-speech";
@@ -17,17 +17,12 @@ export const TextToSpeech = ({ state }: Props) => {
     convertTextToSpeech(state.currentQuestion.question);
   }, [convertTextToSpeech, state]);
 
-  const handleListenButton = () => {
-    convertTextToSpeech(state.currentQuestion.question);
-  };
-
   return (
     <>
-      <Button variant="contained" onClick={handleListenButton}>
-        Listen
-      </Button>
       {speechBlobUrl && (
-        <ReactAudioPlayer src={speechBlobUrl} controls autoPlay />
+        <Grid item>
+          <ReactAudioPlayer src={speechBlobUrl} controls autoPlay />
+        </Grid>
       )}
       {error && <p>{error}</p>}
     </>
