@@ -1,10 +1,15 @@
+import { LoadingButton } from "@mui/lab";
 import { Button, Grid, Typography } from "@mui/material";
 import { useQuestion } from "../hooks/use-question";
+import { useSpeechToText } from "../hooks/use-speech-to-text";
 import { SpeechToText } from "./speech-to-text";
 import { TextToSpeech } from "./text-to-speech";
 
 export const Question = () => {
   const { state, dispatch } = useQuestion();
+  const speechToTextReturns = useSpeechToText();
+  const { isRecording, isConverting } = speechToTextReturns;
+
   const handleNextButton = () => {
     dispatch({ type: "next" });
   };
@@ -22,11 +27,15 @@ export const Question = () => {
         </Typography>
       </Grid>
       <TextToSpeech state={state} />
-      <SpeechToText state={state} />
+      <SpeechToText state={state} {...speechToTextReturns} />
       <Grid item>
-        <Button variant="contained" onClick={handleNextButton}>
+        <LoadingButton
+          variant="contained"
+          onClick={handleNextButton}
+          loading={isRecording || isConverting}
+        >
           Next
-        </Button>
+        </LoadingButton>
       </Grid>
     </>
   );

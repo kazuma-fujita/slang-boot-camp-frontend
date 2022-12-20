@@ -1,33 +1,50 @@
 import MicIcon from "@mui/icons-material/Mic";
 import MicNoneIcon from "@mui/icons-material/MicNone";
-import { CircularProgress, Grid, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSpeechToText } from "../hooks/use-speech-to-text";
 import { State } from "../states/reducer";
 
 type Props = {
   state: State;
+  startRecording: () => Promise<void>;
+  stopRecording: () => Promise<void>;
+  transcribeText: string;
+  isRecording: boolean;
+  isConverting: boolean;
+  error: string;
 };
 
-export const SpeechToText = ({ state }: Props) => {
-  const {
-    startRecording,
-    stopRecording,
-    transcribeText,
-    isRecording,
-    isConverting,
-    error,
-  } = useSpeechToText();
+export const SpeechToText = ({
+  state,
+  startRecording,
+  stopRecording,
+  transcribeText,
+  isRecording,
+  isConverting,
+  error,
+}: Props) => {
+  const [isNextQuestion, setIsNextQuestion] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
 
-  const [isNextQuestion, setNextQuestion] = useState(false);
   useEffect(() => {
-    console.log("Q", state.currentQuestion.question);
-    // console.log("A", transcribeText);
-    setNextQuestion(true);
+    setIsNextQuestion(true);
   }, [state]);
 
+  useEffect(() => {
+    const question = state.currentQuestion.question;
+    // 文末の ! ? . など記号を除去した値を比較
+    setIsCorrect(question.slice(0, -1) === transcribeText.slice(0, -1));
+  }, [state, transcribeText]);
+
   const handleStopRecording = () => {
-    setNextQuestion(false);
+    setIsNextQuestion(false);
     stopRecording();
   };
 
@@ -40,24 +57,24 @@ export const SpeechToText = ({ state }: Props) => {
           aria-label="mic"
         >
           {isRecording ? (
-            <MicIcon sx={{ fontSize: "100px" }} />
+            <MicIcon sx={{ fontSize: "100px" }} color="error" />
           ) : (
             <MicNoneIcon sx={{ fontSize: "100px" }} />
           )}
         </IconButton>
       </Grid>
       <Grid item>
-        <Typography variant="h5">
+        <Box sx={{ typography: "h5" }} height={32}>
           {isNextQuestion ? (
             "Speak up!"
-          ) : isConverting ? (
-            <CircularProgress />
-          ) : state.currentQuestion.question === transcribeText ? (
-            `Whoo-hoo! You're fucking awesome! You said "${transcribeText}"!`
+          ) : isRecording || isConverting ? (
+            <CircularProgress size={32} />
+          ) : isCorrect ? (
+            `Whoo-hoo🎉 You were able to say "${transcribeText}" 👍`
           ) : (
-            `What the hell are you doing? You said "${transcribeText}"`
+            `What the hell are you doing? You said "${transcribeText}" 👎`
           )}
-        </Typography>
+        </Box>
       </Grid>
       {error && <p>{error}</p>}
     </>
