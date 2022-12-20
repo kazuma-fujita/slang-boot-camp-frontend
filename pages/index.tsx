@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { SpeechToText } from "../src/components/speech-to-text";
 
 // const Home2 = () => {
@@ -143,13 +142,13 @@ import { SpeechToText } from "../src/components/speech-to-text";
 //   );
 // };
 
-const Recorder = dynamic(
-  () =>
-    import("../src/components/audio-recorder").then(
-      (module) => module.AudioRecorder
-    ),
-  { ssr: false }
-);
+// const Recorder = dynamic(
+//   () =>
+//     import("../src/components/audio-recorder").then(
+//       (module) => module.AudioRecorder
+//     ),
+//   { ssr: false }
+// );
 
 const Home = () => {
   return (
