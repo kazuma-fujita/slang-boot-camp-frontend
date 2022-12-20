@@ -5,6 +5,7 @@ import {
   useReducer,
   useState,
 } from "react";
+import { Question } from "../src/components/question";
 import { SpeechToText } from "../src/components/speech-to-text";
 import { questions } from "../src/data/questions";
 import { Action, initialState, reducer, State } from "../src/states/reducer";
@@ -172,7 +173,7 @@ const Home = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <QuestionContext.Provider value={{ state, dispatch }}>
-      <SpeechToText />
+      <Question />
     </QuestionContext.Provider>
   );
 };
