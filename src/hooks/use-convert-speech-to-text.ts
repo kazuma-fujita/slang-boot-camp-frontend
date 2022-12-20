@@ -20,9 +20,10 @@ export const useConvertSpeechToText = () => {
         });
         console.log("audio2text", result.transcription.fullText);
         setTranscribeText(result.transcription.fullText);
-      } catch (error) {
+      } catch (err) {
+        const error = err as Error;
         console.error(error);
-        setError(JSON.stringify(error, null, 2));
+        setError(error.message);
       }
     },
     []
