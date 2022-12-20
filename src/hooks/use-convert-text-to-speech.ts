@@ -3,7 +3,6 @@ import { Predictions } from "aws-amplify";
 import { useState, useCallback } from "react";
 
 export const useConvertTextToSpeech = () => {
-  const [speechBuffer, setSpeechBuffer] = useState<Buffer | null>(null);
   const [speechBlobUrl, setSpeechBlobUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
   const convertTextToSpeech = useCallback(async (sourceText: string) => {
@@ -16,13 +15,13 @@ export const useConvertTextToSpeech = () => {
           voiceId: "Amy",
         },
       });
-      setSpeechBuffer(result.audioStream);
       setSpeechBlobUrl(result.speech.url);
-    } catch (error) {
+    } catch (err) {
+      const error = err as Error;
       console.error(error);
-      setError(JSON.stringify(error, null, 2));
+      setError(error.message);
     }
   }, []);
 
-  return { convertTextToSpeech, speechBuffer, speechBlobUrl, error };
+  return { convertTextToSpeech, speechBlobUrl, error };
 };
