@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useConvertSpeechToText } from "./use-convert-speech-to-text";
 
 export const useSpeechToText = () => {
-  const { convertSpeechToText, transcribeText, error } =
+  const { convertSpeechToText, transcribeText, isConverting, error } =
     useConvertSpeechToText();
   const [isRecording, setIsRecording] = useState(false);
   const [micStream, setMicStream] = useState<MicrophoneStream | null>(null);
@@ -49,11 +49,18 @@ export const useSpeechToText = () => {
     if (micStream) {
       micStream.stop();
       setMicStream(null);
+      setIsRecording(false);
       const resultBuffer = audioBuffer.getData();
       await convertSpeechToText(resultBuffer);
-      setIsRecording(false);
     }
   };
 
-  return { startRecording, stopRecording, transcribeText, isRecording, error };
+  return {
+    startRecording,
+    stopRecording,
+    transcribeText,
+    isRecording,
+    isConverting,
+    error,
+  };
 };

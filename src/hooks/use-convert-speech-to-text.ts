@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 export const useConvertSpeechToText = () => {
   const [transcribeText, setTranscribeText] = useState("");
   const [error, setError] = useState("");
+  const [isConverting, setIsConverting] = useState(false);
 
   const convertSpeechToText = useCallback(
     // Amazon Transcribe Streaming が正常動作したのは Buffer[] | ArrayBuffer[] 型のみだった
@@ -12,12 +13,14 @@ export const useConvertSpeechToText = () => {
     // async (bytes: Buffer | ArrayBuffer | Blob | string) => {
     async (bytes: any) => {
       try {
+        setIsConverting(true);
         const result: SpeechToTextOutput = await Predictions.convert({
           transcription: {
             source: { bytes },
             language: "en-US",
           },
         });
+        setIsConverting(false);
         setTranscribeText(result.transcription.fullText);
       } catch (err) {
         const error = err as Error;
@@ -28,5 +31,5 @@ export const useConvertSpeechToText = () => {
     []
   );
 
-  return { convertSpeechToText, transcribeText, error };
+  return { convertSpeechToText, transcribeText, isConverting, error };
 };
