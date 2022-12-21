@@ -16,6 +16,7 @@ type Props = {
   startRecording: () => Promise<void>;
   stopRecording: () => Promise<void>;
   transcribeText: string;
+  clearTranscribeText: () => void;
   isRecording: boolean;
   isConverting: boolean;
   error: string;
@@ -26,6 +27,7 @@ export const SpeechToText = ({
   startRecording,
   stopRecording,
   transcribeText,
+  clearTranscribeText,
   isRecording,
   isConverting,
   error,
@@ -34,13 +36,15 @@ export const SpeechToText = ({
   const [isCorrect, setIsCorrect] = useState(false);
 
   useEffect(() => {
+    clearTranscribeText();
     setIsNextQuestion(true);
-  }, [state]);
+  }, [clearTranscribeText, state]);
 
   useEffect(() => {
     const question = state.currentQuestion.question;
     console.log("Q", question.slice(0, -1));
     console.log("A", transcribeText.slice(0, -1));
+    console.log(question.slice(0, -1) === transcribeText.slice(0, -1));
     // 文末の ! ? . など記号を除去した値を比較
     setIsCorrect(question.slice(0, -1) === transcribeText.slice(0, -1));
   }, [state, transcribeText]);

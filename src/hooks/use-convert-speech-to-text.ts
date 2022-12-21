@@ -7,6 +7,10 @@ export const useConvertSpeechToText = () => {
   const [error, setError] = useState("");
   const [isConverting, setIsConverting] = useState(false);
 
+  const clearTranscribeText = useCallback(() => {
+    setTranscribeText("");
+  }, []);
+
   const convertSpeechToText = useCallback(
     // Amazon Transcribe Streaming が正常動作したのは Buffer[] | ArrayBuffer[] 型のみだった
     // 以下型指定(BytesSource型)では動作しない為、ここだけany型で回避
@@ -31,5 +35,11 @@ export const useConvertSpeechToText = () => {
     []
   );
 
-  return { convertSpeechToText, transcribeText, isConverting, error };
+  return {
+    convertSpeechToText,
+    transcribeText,
+    clearTranscribeText,
+    isConverting,
+    error,
+  };
 };

@@ -16,5 +16,5 @@ export const questions: Question[] = [
     question: "This is fucking awesome!",
     translation: "これめっちゃすげえよ！",
   },
-  { question: "I don’t give a fuck!", translation: "そんなの気にしねえよ！" },
+  { question: "I don't give a fuck!", translation: "そんなの気にしねえよ！" },
 ];
