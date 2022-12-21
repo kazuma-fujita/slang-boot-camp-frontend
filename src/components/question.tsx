@@ -11,14 +11,18 @@ export const Question = () => {
   const { isRecording, isConverting } = speechToTextReturns;
 
   const handleNextButton = () => {
-    dispatch({ type: "next" });
+    state.isLastQuestion
+      ? dispatch({ type: "first" })
+      : dispatch({ type: "next" });
   };
 
   return (
     <>
       <Grid item>
         <Typography variant="h5">
-          {`Stage${state.currentIndex + 1}.`}
+          {state.isLastQuestion
+            ? "Last stage."
+            : `Stage${state.currentIndex + 1}.`}
         </Typography>
       </Grid>
       <Grid item>
@@ -34,7 +38,7 @@ export const Question = () => {
           onClick={handleNextButton}
           loading={isRecording || isConverting}
         >
-          Next
+          {state.isLastQuestion ? "Back to the first" : "Next"}
         </LoadingButton>
       </Grid>
     </>

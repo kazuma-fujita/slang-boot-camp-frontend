@@ -39,6 +39,8 @@ export const SpeechToText = ({
 
   useEffect(() => {
     const question = state.currentQuestion.question;
+    console.log("Q", question.slice(0, -1));
+    console.log("A", transcribeText.slice(0, -1));
     // 文末の ! ? . など記号を除去した値を比較
     setIsCorrect(question.slice(0, -1) === transcribeText.slice(0, -1));
   }, [state, transcribeText]);
@@ -67,7 +69,9 @@ export const SpeechToText = ({
         <Box sx={{ typography: "h5" }} height={32}>
           {isNextQuestion ? (
             "Speak up!"
-          ) : isRecording || isConverting ? (
+          ) : isRecording ? (
+            "Stop the recording👆"
+          ) : isConverting ? (
             <CircularProgress size={32} />
           ) : isCorrect ? (
             `Whoo-hoo🎉 You were able to say "${transcribeText}" 👍`
