@@ -1,4 +1,7 @@
-import { AmazonAIPredictionsProvider } from "@aws-amplify/predictions";
+import {
+  AmazonAIPredictionsProvider,
+  Predictions,
+} from "@aws-amplify/predictions";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -16,7 +19,7 @@ interface MyAppProps extends AppProps {
 }
 
 Amplify.configure(awsconfig);
-
+Amplify.register(Predictions);
 try {
   Amplify.addPluggable(new AmazonAIPredictionsProvider());
 } catch (error) {}

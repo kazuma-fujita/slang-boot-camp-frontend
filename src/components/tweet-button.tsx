@@ -1,18 +1,17 @@
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { Button } from "@mui/material";
-import css from "styled-jsx/css";
 import { useQuestion } from "../hooks/use-question";
 
-// ストリングスタイル
-const style = css`
-  color: white;
-`;
+const appUrl = "https://main.d1ntt9o0lggnhf.amplifyapp.com";
 
 export const TweetButton = () => {
   const { state } = useQuestion();
+  const tweetText = `スラングを${state.correctAnswerCount}個覚えた！ ${appUrl}`;
   return (
     <a
-      href={`https://twitter.com/intent/tweet?text=スラングを${state.correctAnswerCount}個覚えた！`}
+      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        tweetText
+      )}`}
       target="_blank"
       rel="noreferrer"
     >
