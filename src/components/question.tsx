@@ -29,7 +29,12 @@ export const Question = () => {
   useEffect(() => {
     const question = state.currentQuestion.question;
     // 文末の ! ? . など記号を除去した値を比較
-    setIsCorrect(question.slice(0, -1) === transcribeText.slice(0, -1));
+    const isCorrect = question.slice(0, -1) === transcribeText.slice(0, -1);
+    setIsCorrect(isCorrect);
+    if (isCorrect) {
+      dispatch({ type: "addCorrectAnswerCount" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, transcribeText]);
 
   const handleStartRecording = async () => {
@@ -78,6 +83,7 @@ export const Question = () => {
           variant="contained"
           onClick={handleNextButton}
           loading={isRecording || isConverting}
+          size="large"
         >
           {state.isLastQuestion ? "Back to the first" : "Next"}
         </LoadingButton>

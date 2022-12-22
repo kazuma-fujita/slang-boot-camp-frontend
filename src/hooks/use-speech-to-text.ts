@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useConvertSpeechToText } from "./use-convert-speech-to-text";
 
 const silenceSeconds = 2;
+const minVolume = 0.003;
 
 export const useSpeechToText = () => {
   const {
@@ -51,7 +52,7 @@ export const useSpeechToText = () => {
       }
       audioBuffer.addData(raw);
       // 一定音量以下の場合録音停止処理
-      if (raw[0] < 0.003) {
+      if (raw[0] < minVolume) {
         const finishTime = new Date().getTime() - startTime.getTime();
         // 無音秒数(2s)経過した場合録音停止
         if (Math.floor(finishTime / 1000) === silenceSeconds) {

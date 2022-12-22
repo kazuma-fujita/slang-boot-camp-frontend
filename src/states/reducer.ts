@@ -4,29 +4,35 @@ export type State = {
   currentIndex: number;
   currentQuestion: Question;
   isLastQuestion: boolean;
+  isCorrect: boolean;
+  correctAnswerCount: number;
 };
 
 export const initialState: State = {
   currentIndex: 0,
   currentQuestion: questions[0],
   isLastQuestion: false,
+  isCorrect: false,
+  correctAnswerCount: 0,
 };
 
-export type Action = { type: "first" } | { type: "prev" } | { type: "next" };
+export type Action =
+  | { type: "first" }
+  | { type: "addCorrectAnswerCount" }
+  | { type: "next" };
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "first":
       return initialState;
-    case "prev":
-      const prevIndex = state.currentIndex - 1;
-      if (prevIndex in questions) {
-        return {
-          currentIndex: prevIndex,
-          currentQuestion: questions[prevIndex],
-          isLastQuestion: false,
-        };
-      }
+    case "addCorrectAnswerCount":
+      return {
+        ...state,
+        isCorrect: true,
+        correctAnswerCount: state.isCorrect
+          ? state.correctAnswerCount
+          : state.correctAnswerCount + 1,
+      };
     case "next":
       const nextIndex = state.currentIndex + 1;
       if (nextIndex in questions) {
@@ -34,6 +40,8 @@ export const reducer = (state: State, action: Action): State => {
           currentIndex: nextIndex,
           currentQuestion: questions[nextIndex],
           isLastQuestion: nextIndex + 1 === questions.length,
+          isCorrect: false,
+          correctAnswerCount: state.correctAnswerCount,
         };
       }
     default:

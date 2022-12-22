@@ -1,5 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { Question } from "./question";
+import { TweetButton } from "./tweet-button";
 
 export const IndexTemplate = () => {
   return (
@@ -15,6 +16,9 @@ export const IndexTemplate = () => {
         <Typography variant="h2">Slang Boot Camp</Typography>
       </Grid>
       <Question />
+      <Grid item mt={4}>
+        <TweetButton />
+      </Grid>
     </Grid>
   );
 };
