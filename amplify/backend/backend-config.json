@@ -38,5 +38,12 @@
       "service": "Transcribe",
       "convertType": "transcription"
     }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "type": "cicd",
+      "lastPushTimeStamp": "2022-12-22T07:56:24.725Z"
+    }
   }
 }

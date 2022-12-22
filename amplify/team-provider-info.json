@@ -18,6 +18,12 @@
       "predictions": {
         "speechGeneratora239dcbe": {},
         "transcription0e88a3c3": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1ntt9o0lggnhf",
+          "type": "cicd"
+        }
       }
     }
   }
