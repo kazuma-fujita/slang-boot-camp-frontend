@@ -1,8 +1,7 @@
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { Button } from "@mui/material";
+import { appUrl } from "../constants/urls";
 import { useQuestion } from "../hooks/use-question";
-
-const appUrl = "https://main.d1ntt9o0lggnhf.amplifyapp.com";
 
 export const TweetButton = () => {
   const { state } = useQuestion();
