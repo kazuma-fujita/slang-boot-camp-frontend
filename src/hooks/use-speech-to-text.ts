@@ -1,11 +1,13 @@
 import MicrophoneStream from "microphone-stream";
 import { useState } from "react";
 import { useConvertSpeechToText } from "./use-convert-speech-to-text";
+import { useQuestion } from "./use-question";
 
 const silenceSeconds = 2;
 const minVolume = 0.003;
 
 export const useSpeechToText = () => {
+  const { dispatch } = useQuestion();
   const {
     convertSpeechToText,
     transcribeText,
@@ -60,7 +62,10 @@ export const useSpeechToText = () => {
           setMicStream(null);
           setIsRecording(false);
           const resultBuffer = audioBuffer.getData();
-          await convertSpeechToText(resultBuffer);
+          const resultText = await convertSpeechToText(resultBuffer);
+          if (resultText) {
+            dispatch({ type: "judgeAnswer", transcribeText: resultText });
+          }
           return;
         }
       }
@@ -73,7 +78,10 @@ export const useSpeechToText = () => {
       setMicStream(null);
       setIsRecording(false);
       const resultBuffer = audioBuffer.getData();
-      await convertSpeechToText(resultBuffer);
+      const resultText = await convertSpeechToText(resultBuffer);
+      if (resultText) {
+        dispatch({ type: "judgeAnswer", transcribeText: resultText });
+      }
     }
   };
 

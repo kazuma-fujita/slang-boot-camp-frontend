@@ -1,6 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { questions } from "../data/questions";
 import { useQuestion } from "../hooks/use-question";
 import { useSpeechToText } from "../hooks/use-speech-to-text";
 import { SpeechToText } from "./speech-to-text";
@@ -8,7 +9,6 @@ import { TextToSpeech } from "./text-to-speech";
 
 export const Question = () => {
   const { state, dispatch } = useQuestion();
-  const [isCorrect, setIsCorrect] = useState(false);
   const [isNextQuestion, setIsNextQuestion] = useState(true);
   const {
     startRecording,
@@ -25,17 +25,6 @@ export const Question = () => {
       : dispatch({ type: "next" });
     setIsNextQuestion(true);
   };
-
-  useEffect(() => {
-    const question = state.currentQuestion.question;
-    // 文末の ! ? . など記号を除去した値を比較
-    const isCorrect = question.slice(0, -1) === transcribeText.slice(0, -1);
-    setIsCorrect(isCorrect);
-    if (isCorrect) {
-      dispatch({ type: "addCorrectAnswerCount" });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, transcribeText]);
 
   const handleStartRecording = async () => {
     await startRecording();
@@ -66,12 +55,12 @@ export const Question = () => {
       <Grid item>
         <Box sx={{ typography: "h5" }} height={32}>
           {isNextQuestion ? (
-            "Speak up!"
+            "Speak up!👆"
           ) : isRecording ? (
             "Stop the recording👆"
           ) : isConverting ? (
             <CircularProgress size={32} />
-          ) : isCorrect ? (
+          ) : state.isCorrectAnswer ? (
             `Whoo-hoo🎉 You were able to say "${transcribeText}" 👍`
           ) : (
             `What the hell are you doing? You said "${transcribeText}" 👎`

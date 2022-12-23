@@ -6,7 +6,7 @@ const appUrl = "https://main.d1ntt9o0lggnhf.amplifyapp.com";
 
 export const TweetButton = () => {
   const { state } = useQuestion();
-  const tweetText = `スラングを${state.correctAnswerCount}個覚えた！ ${appUrl}`;
+  const tweetText = `スラングの発音を${state.correctAnswerCount}個覚えた！ ${appUrl}`;
   return (
     <a
       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(

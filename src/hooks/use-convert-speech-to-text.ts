@@ -25,7 +25,9 @@ export const useConvertSpeechToText = () => {
           },
         });
         setIsConverting(false);
-        setTranscribeText(result.transcription.fullText);
+        const resultText = result.transcription.fullText;
+        setTranscribeText(resultText);
+        return resultText;
       } catch (err) {
         const error = err as Error;
         console.error(error);
