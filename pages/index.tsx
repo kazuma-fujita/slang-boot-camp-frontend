@@ -5,6 +5,7 @@ import { initialState, reducer } from "../src/states/reducer";
 
 const Home = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <QuestionContext.Provider value={{ state, dispatch }}>
       <IndexTemplate />

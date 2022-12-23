@@ -29,11 +29,8 @@ export const reducer = (state: State, action: Action): State => {
       return initialState;
     case "judgeAnswer":
       const question = state.currentQuestion.question;
-      console.log("Q", question);
-      console.log("A", action.transcribeText);
       const isCorrectAnswer =
         question.slice(0, -1) === action.transcribeText.slice(0, -1);
-      console.log(isCorrectAnswer);
       let correctAnswerHistories: boolean[] = state.correctAnswerHistories;
       // 現在の問題で過去に解答があるか否か
       if (state.currentIndex in state.correctAnswerHistories) {
@@ -51,7 +48,6 @@ export const reducer = (state: State, action: Action): State => {
           isCorrectAnswer,
         ];
       }
-      console.log(correctAnswerHistories);
       return {
         ...state,
         isCorrectAnswer: isCorrectAnswer,

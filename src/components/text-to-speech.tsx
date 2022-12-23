@@ -15,7 +15,8 @@ export const TextToSpeech = ({ state }: Props) => {
   // dispatch({type: "next"})の状態変更を検知しテキストを音声変換
   useEffect(() => {
     convertTextToSpeech(state.currentQuestion.question);
-  }, [convertTextToSpeech, state]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <>
